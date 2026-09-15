@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const FACTORY_ADDRESS = "0x023B2A098e093372413BF7020deBA06391e8Cf23";
+const FACTORY_ADDRESS = "0x33C409E80Cd57f83f958962F77a5b127C34AD556";
 
 const MARKETS = [
   { q: "Will Solana reach $500 before July 2027?", closes: "2027-07-01T00:00:00Z" },

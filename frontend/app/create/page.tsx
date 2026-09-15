@@ -63,7 +63,7 @@ export default function CreatePage() {
         <div className="max-w-md mx-auto px-6 py-24 text-center">
           <div className="text-lg mb-2">Admin only</div>
           <p className="text-sm text-muted mb-6">
-            Market creation is restricted to the platform admin. Markets are
+            Market creation is restricted to authorized creators. Markets are
             curated to ensure clear, resolvable questions.
           </p>
           <Link

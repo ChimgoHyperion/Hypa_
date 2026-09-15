@@ -14,7 +14,10 @@ const PROTOCOL_LINKS = [
   { label: "Roadmap", href: `${REPO}#roadmap` },
 ];
 
+const DISCORD = "https://discord.gg/ncBbMtyS7";
+
 const RESOURCE_LINKS = [
+  { label: "Join the community", href: DISCORD },
   { label: "Get testnet AVAX", href: "https://faucet.avax.network" },
   { label: "Snowtrace explorer", href: SNOWTRACE },
   { label: "Avalanche docs", href: "https://build.avax.network/docs" },
@@ -22,6 +25,7 @@ const RESOURCE_LINKS = [
 ];
 
 const LEGAL_LINKS = [
+  { label: "Discord", href: DISCORD },
   { label: "Source", href: REPO },
   { label: "Contract", href: `${SNOWTRACE}/address/${FACTORY_ADDRESS}#code` },
   { label: "Faucet", href: "https://faucet.avax.network" },
