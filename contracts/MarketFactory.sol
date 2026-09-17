@@ -24,6 +24,7 @@ contract MarketFactory {
     event MarketCreated(
         address indexed marketAddress,
         string question,
+        string category,
         uint256 endTime,
         address indexed creator
     );
@@ -65,10 +66,12 @@ contract MarketFactory {
 
     function createMarket(
         string memory _question,
-        uint256 _endTime
+        uint256 _endTime,
+        string memory _category
     ) external onlyCreator returns (address) {
         PredictionMarket market = new PredictionMarket(
             _question,
+            _category,
             _endTime,
             msg.sender
         );
@@ -79,7 +82,13 @@ contract MarketFactory {
         isListed[marketAddress] = true;
         marketsByCreator[msg.sender].push(marketAddress);
 
-        emit MarketCreated(marketAddress, _question, _endTime, msg.sender);
+        emit MarketCreated(
+            marketAddress,
+            _question,
+            _category,
+            _endTime,
+            msg.sender
+        );
 
         return marketAddress;
     }

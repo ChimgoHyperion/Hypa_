@@ -5,42 +5,44 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PredictionMarket is ReentrancyGuard, Ownable {
+    // ------- Market State -------
 
-    // ------- Market State -------   
+    string public question;
+    string public category; // set at creation; empty on legacy markets
+    uint256 public endTime;
+    bool public resolved;
+    bool public outcome; // true = YES won, false = NO won
 
-    string public question; //"Will the price of BTC exceed $100,000 by 2027-01-01?";
-    uint256 public endTime; // when betting close (until text stamp)
-    bool public resolved; //  has the market has been resolved ?
-    bool public outcome; //  true  =  yes won, false = no won 
-
-
-     // ─── Bet Tracking ───────────────────────────────────────
-    uint256 public totalYes;       // total AVAX bet on YES
-    uint256 public totalNo;        // total AVAX bet on NO
-    mapping(address => uint256) public yesBets; // how much each user has bet on YES
-    mapping(address => uint256) public noBets; // How much each user has bet on NO
-    mapping(address => bool) public hasClaimed; // Has user claimed their winnings yet?
+    // ─── Bet Tracking ───────────────────────────────────────
+    uint256 public totalYes;
+    uint256 public totalNo;
+    mapping(address => uint256) public yesBets;
+    mapping(address => uint256) public noBets;
+    mapping(address => bool) public hasClaimed;
 
     // ─── Fee ────────────────────────────────────────────────
-    uint256 public constant FEE_PERCENT = 2;      // 2% platform fee
+    uint256 public constant FEE_PERCENT = 2;
 
     // ─── Events ───────────────────────────────────────────────
     event BetPlaced(address indexed user, bool isYes, uint256 amount);
     event MarketResolved(bool outcome);
     event WinningsClaimed(address indexed user, uint256 amount);
 
-
     // ─── Constructor ─────────────────────────────────────────
     constructor(
         string memory _question,
+        string memory _category,
         uint256 _endTime,
         address _owner
     ) Ownable(_owner) {
+        require(bytes(_question).length > 0, "Empty question");
+        require(bytes(_category).length > 0, "Empty category");
+        require(bytes(_category).length <= 32, "Category too long");
         require(_endTime > block.timestamp, "End time must be in the future");
         question = _question;
+        category = _category;
         endTime = _endTime;
     }
-
 
     // ─── Betting ─────────────────────────────────────────────
     modifier marketOpen() {
@@ -63,7 +65,7 @@ contract PredictionMarket is ReentrancyGuard, Ownable {
         emit BetPlaced(msg.sender, false, msg.value);
     }
 
-    // ─── Resolution ──────────────────────────────────────────
+    // ─── Resolution (creator / owner only) ───────────────────
     function resolve(bool _outcome) external onlyOwner {
         require(block.timestamp >= endTime, "Market not ended yet");
         require(!resolved, "Already resolved");
@@ -93,19 +95,17 @@ contract PredictionMarket is ReentrancyGuard, Ownable {
 
         require(userBet > 0, "No winning bet");
 
-        // Calculate winnings: your stake + your share of losing pool
         uint256 grossWinnings = userBet + (userBet * losingSide / winningSide);
         uint256 fee = (grossWinnings * FEE_PERCENT) / 100;
         uint256 payout = grossWinnings - fee;
 
         hasClaimed[msg.sender] = true;
-        
+
         (bool success, ) = payable(msg.sender).call{value: payout}("");
         require(success, "Transfer failed");
 
         emit WinningsClaimed(msg.sender, payout);
     }
-
 
     // ─── Views ───────────────────────────────────────────────
     function getMarketInfo() external view returns (
@@ -127,13 +127,10 @@ contract PredictionMarket is ReentrancyGuard, Ownable {
         return (yesBets[user], noBets[user], hasClaimed[user]);
     }
 
-    // Owner can withdraw collected fees
     function withdrawFees() external onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "Nothing to withdraw");
         (bool success, ) = payable(owner()).call{value: balance}("");
         require(success, "Transfer failed");
     }
-
-    
 }

@@ -23,7 +23,7 @@ describe("Prediction Market", function () {
     // End time = 1 hour from now
     const endTime = Math.floor(Date.now() / 1000) + 3600;
 
-    const tx = await factory.createMarket("Will BTC hit $100k?", endTime);
+    const tx = await factory.createMarket("Will BTC hit $100k?", endTime, "Crypto");
     await tx.wait();
 
     const count = await factory.getMarketCount();
@@ -37,7 +37,7 @@ describe("Prediction Market", function () {
     const endTime = Math.floor(Date.now() / 1000) + 3600;
 
     // 1. Create market
-    const tx = await factory.createMarket("Will ETH hit $5k?", endTime);
+    const tx = await factory.createMarket("Will ETH hit $5k?", endTime, "Crypto");
     await tx.wait();
     const markets = await factory.getAllMarkets();
     const marketAddress = markets[0];

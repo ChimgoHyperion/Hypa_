@@ -8,7 +8,7 @@ import { Ticker } from "@/app/components/Ticker";
 import { FeaturedMarket } from "@/app/components/FeaturedMarket";
 import { MarketCardSkeleton } from "@/app/components/MarketCardSkeleton";
 import { useMarkets } from "@/app/hooks/useMarkets";
-import { inferCategory, CATEGORIES } from "@/app/lib/category";
+import { CATEGORIES } from "@/app/lib/category";
 import { MarketCard } from "./components/MarketCard";
 
 function MarketsSkeleton() {
@@ -76,7 +76,7 @@ function HomeContent() {
     Resolved: resolved.length,
   };
   for (const c of CATEGORIES) {
-    counts[c] = open.filter((m) => inferCategory(m.question) === c).length;
+    counts[c] = open.filter((m) => m.category === c).length;
   }
 
   const visibleFilters = [
@@ -90,7 +90,7 @@ function HomeContent() {
       ? resolved
       : filter === "All"
       ? open
-      : open.filter((m) => inferCategory(m.question) === filter);
+      : open.filter((m) => m.category === filter);
 
   if (isLoading) return <MarketsSkeleton />;
 

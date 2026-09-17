@@ -21,7 +21,7 @@ import {
   getYesPercent,
   shortAddress,
 } from "@/app/lib/odds";
-import { inferCategory, CATEGORY_STYLES } from "@/app/lib/category";
+import { resolveCategory, CATEGORY_STYLES } from "@/app/lib/category";
 
 function formatCloseTime(endTime: bigint) {
   if (endTime === 0n) return "Unavailable";
@@ -62,6 +62,12 @@ export default function MarketPage({
     functionName: "owner",
     query: { enabled: validAddress },
   });
+  const { data: onChainCategory } = useReadContract({
+    address: marketAddress,
+    abi: MARKET_ABI,
+    functionName: "category",
+    query: { enabled: validAddress },
+  });
 
   const info = data as
     | [string, bigint, boolean, boolean, bigint, bigint]
@@ -75,7 +81,10 @@ export default function MarketPage({
   const yesPercent = getYesPercent(totalYes, totalNo);
   const noPercent = 100 - yesPercent;
   const volume = getVolume(totalYes, totalNo);
-  const category = inferCategory(question);
+  const category = resolveCategory(
+    question,
+    typeof onChainCategory === "string" ? onChainCategory : null
+  );
 
   // eslint-disable-next-line react-hooks/purity
   const nowSec = BigInt(Math.floor(Date.now() / 1000));

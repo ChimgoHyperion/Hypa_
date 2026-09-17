@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const FACTORY_ADDRESS = "0x33C409E80Cd57f83f958962F77a5b127C34AD556";
+const FACTORY_ADDRESS = "0x8ac908E7C99E3037D1e2Fb53fEdDeb68b7cDaf23";
 
 function daysFromNow(days: number): number {
   return Math.floor(Date.now() / 1000) + days * 24 * 60 * 60;
@@ -45,7 +45,7 @@ async function main() {
 
     process.stdout.write(`[${i + 1}/${MARKETS.length}] ${m.q.slice(0, 45)}... `);
 
-    const tx = await factory.createMarket(m.q, endTime);
+    const tx = await factory.createMarket(m.q, endTime, "Other");
     await tx.wait();
 
     const all = await factory.getAllMarkets();

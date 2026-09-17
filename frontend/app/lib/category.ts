@@ -17,6 +17,27 @@ export const CATEGORIES: Category[] = [
   "Other",
 ];
 
+/** Categories creators can pick on the create form (excludes catch-all Other). */
+export const SELECTABLE_CATEGORIES: Category[] = CATEGORIES.filter(
+  (c) => c !== "Other"
+);
+
+export function parseCategory(value: unknown): Category | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  const trimmed = value.trim();
+  return (CATEGORIES as string[]).includes(trimmed)
+    ? (trimmed as Category)
+    : null;
+}
+
+/** Prefer the on-chain category when present; otherwise infer from the question. */
+export function resolveCategory(
+  question: string,
+  onChainCategory?: string | null
+): Category {
+  return parseCategory(onChainCategory) ?? inferCategory(question);
+}
+
 export function inferCategory(question: string): Category {
   const q = question.toLowerCase();
 
@@ -78,4 +99,14 @@ export const CATEGORY_STYLES: Record<Category, string> = {
   Technology: "bg-violet-500/10 text-violet-400 border-violet-500/20",
   "Pop Culture": "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20",
   Other: "bg-white/5 text-dim border-border-strong",
+};
+
+export const CATEGORY_HINTS: Record<Category, string> = {
+  Crypto: "Tokens, protocols, TVL, and on-chain events",
+  Finance: "Rates, stocks, indices, and macro moves",
+  Sports: "Matches, tournaments, and player awards",
+  Politics: "Elections, legislation, and policy",
+  Technology: "Products, AI launches, and big tech",
+  "Pop Culture": "Games, film, music, and celebrities",
+  Other: "Anything that does not fit the topics above",
 };

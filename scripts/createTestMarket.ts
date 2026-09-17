@@ -11,7 +11,7 @@ async function main() {
   console.log("Creating fast test market...");
   console.log("Ends at:", new Date(endTime * 1000).toLocaleTimeString());
 
-  const tx = await factory.createMarket(question, endTime);
+  const tx = await factory.createMarket(question, endTime, "Other");
   await tx.wait();
 
   const markets = await factory.getAllMarkets();

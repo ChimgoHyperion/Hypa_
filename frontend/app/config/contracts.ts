@@ -1,5 +1,5 @@
 // Auto-generated contract config for Hypa
-export const FACTORY_ADDRESS = '0x33C409E80Cd57f83f958962F77a5b127C34AD556' as const;
+export const FACTORY_ADDRESS = '0x8ac908E7C99E3037D1e2Fb53fEdDeb68b7cDaf23' as const;
 
 export const FACTORY_ABI = [
   {
@@ -39,6 +39,12 @@ export const FACTORY_ABI = [
         "indexed": false,
         "internalType": "string",
         "name": "question",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "category",
         "type": "string"
       },
       {
@@ -145,6 +151,11 @@ export const FACTORY_ABI = [
         "internalType": "uint256",
         "name": "_endTime",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_category",
+        "type": "string"
       }
     ],
     "name": "createMarket",
@@ -280,6 +291,11 @@ export const MARKET_ABI = [
       {
         "internalType": "string",
         "name": "_question",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_category",
         "type": "string"
       },
       {
@@ -424,6 +440,19 @@ export const MARKET_ABI = [
     "name": "betYes",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "category",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

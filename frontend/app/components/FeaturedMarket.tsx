@@ -9,7 +9,7 @@ import {
   formatTimeLeft,
   formatCompactVolume,
 } from "@/app/lib/odds";
-import { inferCategory, CATEGORY_STYLES } from "@/app/lib/category";
+import { CATEGORY_STYLES } from "@/app/lib/category";
 import { MarketThumb } from "./MarketThumb";
 import {
   Area,
@@ -24,7 +24,7 @@ export function FeaturedMarket({ market }: { market: MarketData }) {
   const yesPercent = getYesPercent(market.totalYes, market.totalNo);
   const noPercent = 100 - yesPercent;
   const volume = getVolume(market.totalYes, market.totalNo);
-  const category = inferCategory(market.question);
+  const category = market.category;
 
   // eslint-disable-next-line react-hooks/purity
   const nowSec = BigInt(Math.floor(Date.now() / 1000));

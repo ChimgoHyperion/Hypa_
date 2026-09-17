@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const FACTORY_ADDRESS = "0x33C409E80Cd57f83f958962F77a5b127C34AD556";
+const FACTORY_ADDRESS = "0x8ac908E7C99E3037D1e2Fb53fEdDeb68b7cDaf23";
 
 const MARKETS = [
   { q: "Will Solana reach $500 before July 2027?", closes: "2027-07-01T00:00:00Z" },
@@ -78,7 +78,8 @@ async function main() {
 
     const tx = await factory.createMarket(
       market.q,
-      toTimestamp(market.closes)
+      toTimestamp(market.closes),
+      "Other"
     );
     const receipt = await tx.wait();
     console.log(`✓ ${receipt?.hash.slice(0, 12)}…`);

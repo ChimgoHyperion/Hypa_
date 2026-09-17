@@ -13,7 +13,7 @@ import {
   formatCompactVolume,
   shortAddress,
 } from "@/app/lib/odds";
-import { inferCategory, CATEGORY_STYLES } from "@/app/lib/category";
+import { CATEGORY_STYLES } from "@/app/lib/category";
 
 export function MarketCard({ market }: { market: MarketData }) {
   const yesPercent = getYesPercent(market.totalYes, market.totalNo);
@@ -23,7 +23,7 @@ export function MarketCard({ market }: { market: MarketData }) {
   // eslint-disable-next-line react-hooks/purity
   const nowSec = BigInt(Math.floor(Date.now() / 1000));
   const ended = market.endTime <= nowSec;
-  const category = inferCategory(market.question);
+  const category = market.category;
 
   const closingSoon =
     !ended && !market.resolved && market.endTime - nowSec < 86400n;
